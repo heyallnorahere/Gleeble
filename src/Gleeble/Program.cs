@@ -1,5 +1,7 @@
 ﻿namespace Gleeble;
 
+using Gleeble.Engine;
+
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.SPIRV;
@@ -9,7 +11,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Numerics;
-using System.Text;
 
 public struct Vertex
 {
@@ -158,6 +159,21 @@ public static class Program
 
     public static void Main(string[] args)
     {
+        using (var world = new World<byte>(256, 16))
+        {
+            for (int x = 0; x < 16; x++)
+            {
+                for (int y = 0; y < 16; y++)
+                {
+                    for (int z = 0; z < 16; z++)
+                    {
+                        Coord position = (x, y, z);
+                        world.LoadChunk(position);
+                    }
+                }
+            }
+        }
+
         Initialize();
         CreateResources(sDevice);
 

@@ -9,7 +9,7 @@ public struct Coord : IEquatable<Coord>
     {
         X = x;
         Y = y;
-        Z = y;
+        Z = z;
     }
 
     public bool Equals(Coord other)
@@ -35,6 +35,8 @@ public struct Coord : IEquatable<Coord>
 
         return xHash ^ yHash ^ zHash;
     }
+
+    public override string ToString() => $"<{X}, {Y}, {Z}>";
 
     public static Coord operator +(Coord lhs, Coord rhs) => new Coord
     {

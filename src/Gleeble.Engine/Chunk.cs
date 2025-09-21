@@ -4,28 +4,32 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-public readonly struct Chunk<T> where T : unmanaged
+public sealed class Chunk<T> where T : unmanaged
 {
-    public Chunk(int width, int height, Span<T> buffer)
+    public Chunk(int size, Span<T> buffer)
     {
-        mWidth = width;
-        mHeight = height;
+        mSize = size;
 
-        int blockCount = width * width * height;
+        int blockCount = size * size * size;
         if (buffer.Length < blockCount)
         {
             throw new ArgumentException($"Allocated memory chunk is not at least {blockCount} elements large!");
         }
 
-        mBufferCapacity = buffer.Length;
         unsafe
         {
+            // should stay fixed because its arena-allocated
             fixed (T* ptr = buffer)
             {
-                // will this work? nora is skeptical
                 mBuffer = ptr;
             }
         }
+    }
+
+    public void Clear()
+    {
+        var span = AsSpan();
+        span.Fill(default);
     }
 
     internal int CalculateBufferIndex(Coord position)
@@ -34,8 +38,8 @@ public readonly struct Chunk<T> where T : unmanaged
         // also, +y is up
 
         int xOffset = position.X;
-        int yOffset = mWidth * mWidth * position.Y;
-        int zOffset = mWidth * position.Z;
+        int yOffset = mSize * mSize * position.Y;
+        int zOffset = mSize * position.Z;
 
         return xOffset + yOffset + zOffset;
     }
@@ -45,18 +49,16 @@ public readonly struct Chunk<T> where T : unmanaged
         get
         {
             int index = CalculateBufferIndex(position);
-            unsafe
-            {
-                return mBuffer[index];
-            }
+
+            var span = AsSpan();
+            return span[index];
         }
         set
         {
             int index = CalculateBufferIndex(position);
-            unsafe
-            {
-                mBuffer[index] = value;
-            }
+
+            var span = AsSpan();
+            span[index] = value;
         }
     }
 
@@ -97,13 +99,10 @@ public readonly struct Chunk<T> where T : unmanaged
         // todo: serialize state data as well?
     }
 
-    public int Width => mWidth;
-    public int Height => mHeight;
+    public int Size => mSize;
 
-    public unsafe Span<T> AsSpan() => new Span<T>(mBuffer, mBufferCapacity);
+    public unsafe Span<T> AsSpan() => new Span<T>(mBuffer, mSize * mSize * mSize);
 
-    private readonly int mWidth, mHeight;
-
-    private unsafe readonly T* mBuffer;
-    private readonly int mBufferCapacity;
+    private readonly int mSize;
+    private readonly unsafe T* mBuffer;
 }
