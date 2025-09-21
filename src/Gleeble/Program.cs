@@ -4,14 +4,12 @@ using Gleeble.Engine;
 
 using Veldrid;
 using Veldrid.Sdl2;
-using Veldrid.SPIRV;
 using Veldrid.StartupUtilities;
 
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Numerics;
-using System.Text;
 
 public struct Vertex
 {
@@ -69,7 +67,7 @@ public static class Program
         };
 
         sWindow = VeldridStartup.CreateWindow(ref createInfo);
-        sDevice = VeldridStartup.CreateGraphicsDevice(sWindow, deviceOptions);
+        sDevice = VeldridStartup.CreateVulkanGraphicsDevice(deviceOptions, sWindow);
     }
 
     private static unsafe DeviceBuffer CreateBuffer<T>(GraphicsDevice device, ReadOnlySpan<T> data, BufferUsage usage) where T : unmanaged
@@ -86,23 +84,6 @@ public static class Program
         }
 
         return buffer;
-    }
-
-    private static byte[] GetResourceBytes(string path)
-    {
-        var assembly = typeof(Program).Assembly;
-        using var stream = assembly.GetManifestResourceStream(path);
-
-        if (stream is null)
-        {
-            throw new FileNotFoundException();
-        }
-
-        using var memory = new MemoryStream();
-        stream.CopyTo(memory);
-
-        var buffer = memory.GetBuffer().AsSpan();
-        return buffer.Slice(0, (int)stream.Length).ToArray();
     }
 
     [MemberNotNull(nameof(sCommandList))]
