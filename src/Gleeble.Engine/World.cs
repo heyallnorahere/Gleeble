@@ -14,7 +14,7 @@ public interface IChunkGeneration<T> where T : unmanaged
 
 public interface IChunkSerializer
 {
-    public Stream OpenChunkForReading(Coord position);
+    public Stream? OpenChunkForReading(Coord position);
     public Stream OpenChunkForWriting(Coord position);
 }
 
@@ -95,14 +95,15 @@ public class World<T> : IDisposable where T : unmanaged
             return false;
         }
 
-        try
-        {
-            using var input = mSerializer.OpenChunkForReading(position);
-            chunk.Deserialize(input);
-        }
-        catch (FileNotFoundException)
+        using var input = mSerializer.OpenChunkForReading(position);
+        if (input is null)
         {
             return false;
+        }
+
+        try
+        {
+            chunk.Deserialize(input);
         }
         catch (EndOfStreamException)
         {
@@ -145,6 +146,7 @@ public class World<T> : IDisposable where T : unmanaged
             SaveChunk(position, chunk);
         }
 
+        mChunks.Set(position, chunk);
         mLoadedChunks.Add(position, arrayOffset);
     }
 

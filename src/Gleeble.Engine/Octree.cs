@@ -29,9 +29,9 @@ public sealed class Octree<T>
             {
                 Center = new Coord
                 {
-                    X = isNegativeX ? -halfSize : halfSize - 1,
-                    Y = isNegativeY ? -halfSize : halfSize - 1,
-                    Z = isNegativeZ ? -halfSize : halfSize - 1
+                    X = isNegativeX ? -halfSize : halfSize,
+                    Y = isNegativeY ? -halfSize : halfSize,
+                    Z = isNegativeZ ? -halfSize : halfSize
                 },
 
                 Child = null,
@@ -47,7 +47,7 @@ public sealed class Octree<T>
                 position.Y >= nodeSize || position.Y < -nodeSize ||
                 position.Z >= nodeSize || position.Z < -nodeSize)
         {
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException(nameof(position), position, "Invalid octree coordinate!");
         }
     }
 
@@ -108,7 +108,7 @@ public sealed class Octree<T>
             {
                 // subdivide
                 int nodeSize = GetNodeSize();
-                node.Child = new Octree<T>(nodeSize);
+                node.Child = new Octree<T>(mLevel - 1);
             }
 
             var center = node.Center;

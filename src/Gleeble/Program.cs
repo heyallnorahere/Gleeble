@@ -11,6 +11,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Numerics;
+using System.Text;
 
 public struct Vertex
 {
@@ -118,13 +119,8 @@ public static class Program
         sVertexBuffer = CreateBuffer<Vertex>(device, sVertices, BufferUsage.VertexBuffer);
         sIndexBuffer = CreateBuffer<uint>(device, sIndices, BufferUsage.IndexBuffer);
 
-        var vertexSrc = GetResourceBytes("Gleeble.Shaders.Vertex.glsl");
-        var vertexDesc = new ShaderDescription(ShaderStages.Vertex, vertexSrc, "main");
-
-        var fragSrc = GetResourceBytes("Gleeble.Shaders.Fragment.glsl");
-        var fragDesc = new ShaderDescription(ShaderStages.Fragment, fragSrc, "main");
-
-        sShaders = factory.CreateFromSpirv(vertexDesc, fragDesc);
+        var compiler = new ShaderCompiler(factory);
+        sShaders = compiler.CompileShader("Shaders/Basic.glsl");
 
         var elements = new VertexElementDescription[]
         {
@@ -159,7 +155,7 @@ public static class Program
 
     public static void Main(string[] args)
     {
-        using (var world = new World<byte>(256, 16))
+        using (var world = new World<byte>(6, 16))
         {
             for (int x = 0; x < 16; x++)
             {

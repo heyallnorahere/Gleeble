@@ -45,7 +45,7 @@ public struct Coord : IEquatable<Coord>
         Z = lhs.Z + rhs.Z
     };
 
-    public static Coord operator -(Coord c) => new Coord(-c.X, -c.Y, -c.Z);
+    public static Coord operator -(Coord c) => (-c.X, -c.Y, -c.Z);
     public static Coord operator -(Coord lhs, Coord rhs) => lhs + -rhs;
 
     public static bool operator ==(Coord lhs, Coord rhs) => lhs.Equals(rhs);
