@@ -17,4 +17,8 @@
     <EmbeddedResource Include="@(Shaders)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gleeble.Engine\Gleeble.Engine.csproj" />
+  </ItemGroup>
+
 </Project>

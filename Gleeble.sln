@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4F63483F-BA7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gleeble", "src\Gleeble\Gleeble.csproj", "{A686C439-E23A-4E28-9314-029A49C5D0E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gleeble.Engine", "src\Gleeble.Engine\Gleeble.Engine.csproj", "{4D5EF8FE-FC40-4FC2-84D0-F6A5BD0D22FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +22,13 @@ Global
 		{A686C439-E23A-4E28-9314-029A49C5D0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A686C439-E23A-4E28-9314-029A49C5D0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A686C439-E23A-4E28-9314-029A49C5D0E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D5EF8FE-FC40-4FC2-84D0-F6A5BD0D22FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D5EF8FE-FC40-4FC2-84D0-F6A5BD0D22FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D5EF8FE-FC40-4FC2-84D0-F6A5BD0D22FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D5EF8FE-FC40-4FC2-84D0-F6A5BD0D22FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A686C439-E23A-4E28-9314-029A49C5D0E2} = {4F63483F-BA77-406E-8C18-13217F809F23}
+		{4D5EF8FE-FC40-4FC2-84D0-F6A5BD0D22FE} = {4F63483F-BA77-406E-8C18-13217F809F23}
 	EndGlobalSection
 EndGlobal
